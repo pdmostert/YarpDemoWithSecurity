@@ -1,0 +1,26 @@
+services:
+  yarp.proxy:
+    image: ${DOCKER_REGISTRY-}yarpproxy
+    build:
+      context: .
+      dockerfile: Yarp.Proxy/Dockerfile
+    container_name: yarp-proxy
+    ports:
+      - "3000:8080"
+    depends_on:
+      - hello.api
+    networks:
+      - appnet
+
+  hello.api:
+    image: ${DOCKER_REGISTRY-}helloapi
+    build:
+      context: .
+      dockerfile: hello.api/Dockerfile
+    container_name: hello-api
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
